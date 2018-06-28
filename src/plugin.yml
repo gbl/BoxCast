@@ -3,30 +3,8 @@ version: 1.0
 name: BoxCast
 
 commands:
-  displaybirthday:
-    description: Server Birthday
-  displaydonate:
-    description: Link to Dontate
-  displayemail:
-    description: Server Email
-  displayforum:
-    description: Server Forum
-  displayip:
-    description: Server IP address
-  displayts:
-    description: TeamSpeak address
-  displaytwitch:
-    description: Server Twitch
-  displaytwitter:
-    description: Server Twitter
-  displaywebsite:
-    description: Server Website
-  displayyoutube:
-    description: Server YouTube
-  displayclaiming:
-    description: How to claim Video
-  displayrules:
-    description: Server Rules
+  display:
+    description: All kinds of server information
   boxcastreload:
     usage: /<command>
     description: Reload BoxCast Config

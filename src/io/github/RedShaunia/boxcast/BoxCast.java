@@ -2,6 +2,8 @@ package io.github.RedShaunia.boxcast;
 
 import java.io.File;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
@@ -53,15 +55,27 @@ public class BoxCast extends JavaPlugin {
 	
                 Player player = (Player) sender;
                 player.sendMessage(ChatColor.DARK_AQUA + "BoxCast Server Infomation");
-
                 Set<String>entries=getConfig().getKeys(false);
-                for (String entry:entries) {
-                        if (entry.equalsIgnoreCase(cmd.getName())) {
-                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString(entry)));
-                                return true;
+
+                if (args.length==1) {
+                        String configEntry=cmd.getName()+args[0];
+                        for (String entry:entries) {
+                                if (entry.equalsIgnoreCase(configEntry)) {
+                                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString(entry)));
+                                        return true;
+                                }
                         }
+                        player.sendMessage("I don't know what to make of "+args[0]);
+                        return false;
                 }
-                player.sendMessage("I don't know what to make of "+cmd.getName());
-                return false;
+                else {
+                        SortedSet<String> displayItems=new TreeSet<>();
+                        for (String entry: entries) {
+                                if (entry.toLowerCase().startsWith(cmd.getName().toLowerCase()))
+                                        displayItems.add(entry.substring(cmd.getName().length()));
+                        }
+                        player.sendMessage("/display takes one parameter of "+String.join(", ", displayItems));
+                        return true;
+                }
 	}
 }
