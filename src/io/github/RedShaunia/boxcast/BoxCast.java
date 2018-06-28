@@ -6,6 +6,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -47,25 +48,23 @@ public class BoxCast extends JavaPlugin {
                         sender.sendMessage(ChatColor.GREEN + "Reloaded BoxCast config!");
                         return true;
                 }
-
-                if (!(sender instanceof Player)) {
-                        sender.sendMessage("You must be a player to use this command!");
-                        return false;
-                }
 	
-                Player player = (Player) sender;
-                player.sendMessage(ChatColor.DARK_AQUA + "BoxCast Server Infomation");
+                sender.sendMessage(ChatColor.DARK_AQUA + "BoxCast Server Infomation");
                 Set<String>entries=getConfig().getKeys(false);
 
                 if (args.length==1) {
                         String configEntry=cmd.getName()+args[0];
                         for (String entry:entries) {
                                 if (entry.equalsIgnoreCase(configEntry)) {
-                                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString(entry)));
+                                        String message=ChatColor.translateAlternateColorCodes('&', getConfig().getString(entry));
+                                        if (sender instanceof Player)
+                                                sender.sendMessage(message);
+                                        else
+                                                Bukkit.broadcastMessage(message);
                                         return true;
                                 }
                         }
-                        player.sendMessage("I don't know what to make of "+args[0]);
+                        sender.sendMessage("I don't know what to make of "+args[0]);
                         return false;
                 }
                 else {
@@ -74,7 +73,7 @@ public class BoxCast extends JavaPlugin {
                                 if (entry.toLowerCase().startsWith(cmd.getName().toLowerCase()))
                                         displayItems.add(entry.substring(cmd.getName().length()));
                         }
-                        player.sendMessage("/display takes one parameter of "+String.join(", ", displayItems));
+                        sender.sendMessage("/display takes one parameter of "+String.join(", ", displayItems));
                         return true;
                 }
 	}
